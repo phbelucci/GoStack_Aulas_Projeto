@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@babel/cli": "^7.10.1",
+    "python2": "^0.0.1",
+    "uuidv4": "^6.1.0"
+  }
+}
