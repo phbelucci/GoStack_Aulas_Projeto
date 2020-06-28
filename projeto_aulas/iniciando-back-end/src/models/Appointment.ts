@@ -1,22 +1,37 @@
 //models são as representações do objeto no banco de dados
+import {
+  Entity, 
+  PrimaryGeneratedColumn, 
+  Column, 
+  CreateDateColumn, 
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn
+} from 'typeorm'
 
-import { uuid } from 'uuidv4'
+import User from './Users';
 
+@Entity('appointments')
 class Appointment {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  id: string
+  @Column()
+  provider_id: string;
 
-  provider: string
+  @ManyToOne(() => User)
+  @JoinColumn({name: 'provider_id'})
+  provider: User;
 
-  date: Date
+  @Column('time with time zone')
+  date: Date;
 
-  //Omit - necessario informar o tipo do objeto e o parametro que não será necessario no constructor
-  constructor({provider, date} : Omit<Appointment, 'id'>){
-    this.id = uuid()
-    this.provider = provider
-    this.date = date
-  }
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
 }
 
-export default Appointment
+export default Appointment;
