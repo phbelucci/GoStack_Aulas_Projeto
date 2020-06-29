@@ -3,11 +3,14 @@ import {parseISO} from 'date-fns'
 import AppointmentsRepository from '../repositories/AppointmentsRepository'
 import CreateAppointmentService from '../services/CreateAppointmentService'
 
+import ensureAuth from '../midlewares/ensureAuth'
+
 import {getCustomRepository} from 'typeorm'
 //parseISO vai converter uma string para um formato de Date, nativo do javascript
 //startOfHour pega a data e coloca no começo da hora informada, zerando todos os outros atributos, minutos segundos e etc
 
 const appointmentsRouter  = Router()
+appointmentsRouter.use(ensureAuth)
 
 //SoC: Separation of Concerns
 //DTO = Data Transfer Object
@@ -21,13 +24,13 @@ appointmentsRouter.get('/', async (req, res) => {
 
 appointmentsRouter.post('/', async (req, res) => {
     try {
-      const {provider, date} = req.body
+      const {provider_id, date} = req.body
 
       const parsedDate = parseISO(date)
 
       const creatAppointment = new CreateAppointmentService();
 
-      const appointment = await creatAppointment.execute({provider, date : parsedDate})
+      const appointment = await creatAppointment.execute({provider_id, date : parsedDate})
       return res.json(appointment)
 
     } catch (err){
